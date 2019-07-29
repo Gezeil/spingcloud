@@ -24,10 +24,10 @@ public class XiangyanjunGatewayApplication {
 		SpringApplication.run(XiangyanjunGatewayApplication.class, args);
 	}
 
-//	@Bean
-//	public TokenFilter tokenFilter(){
-//		return new TokenFilter();
-//	}
+	@Bean
+	public TokenFilter tokenFilter(){
+		return new TokenFilter();
+	}
 
 	@Component
 	@Primary

@@ -31,6 +31,9 @@ public class TokenFilter extends ZuulFilter {
     public Object run() throws ZuulException {
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
+        if (request.getRequestURI().contains("/api-docs")){
+            return null;
+        }
         String token = request.getParameter("token");
         if (token == null){
             context.setSendZuulResponse(false);

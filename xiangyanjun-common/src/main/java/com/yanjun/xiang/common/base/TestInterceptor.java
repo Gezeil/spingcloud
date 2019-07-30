@@ -1,5 +1,8 @@
 package com.yanjun.xiang.common.base;
 
+import com.yanjun.xiang.common.annotation.Auth;
+import com.yanjun.xiang.common.annotation.PostApi;
+import com.yanjun.xiang.common.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -24,18 +27,22 @@ public class TestInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Method method = ((HandlerMethod) handler).getMethod();
-        CherryAnnotation mergedAnnotation = AnnotatedElementUtils.getMergedAnnotation(method, CherryAnnotation.class);
+        PostApi mergedAnnotation = AnnotatedElementUtils.getMergedAnnotation(method, PostApi.class);
         if (mergedAnnotation.auth()){
-            System.out.println(""+mergedAnnotation.auth());
+            String token = request.getHeader("accessToken");
+            if (token!=null){
+                boolean result = JwtUtils.verify(token);
+                if (result){
+                    return true;
+                }else {
+                    return false;
+                }
+            }else {
+                return false;
+            }
         }else {
-            System.out.println(""+mergedAnnotation.auth());
+            return true;
         }
-        System.out.println("===================自定义拦截器=================");
-        if (handler instanceof HandlerMethod) {
-            String requestURI = request.getRequestURI();
-            System.out.println("当前请求路径是:{}" + requestURI);
-        }
-        return true;
     }
 
 }

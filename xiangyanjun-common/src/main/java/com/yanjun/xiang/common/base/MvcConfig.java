@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Date 2019/7/29 0029.
  */
 @SpringBootConfiguration
-public class MvcCONFIG implements WebMvcConfigurer{
+public class MvcConfig implements WebMvcConfigurer{
     @Autowired
     private TestInterceptor testInterceptor;
 

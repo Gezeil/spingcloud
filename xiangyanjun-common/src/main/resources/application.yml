@@ -3,6 +3,28 @@ server:
 spring:
   application:
     name: xiangyanjun-common
+  data:
+    elasticsearch:
+      cluster-name: es-1
+      cluster-nodes: 192.168.13.250:9200
+elasticsearch:
+  hostlist: 192.168.13.250:9200
+#  rabbitmq:
+#    host: 127.0.0.1
+#    port: 5672
+#    username: admin
+#    password: admin
+#    publisher-confirms: true
+#    # 开启ACK
+#    publisher-returns: true
+#    listener:
+#      direct:
+#        acknowledge-mode: manual
+#      simple:
+#        acknowledge-mode: manual
+#    template:
+#      exchange: logs
+
 eureka:
   client:
     service-url:

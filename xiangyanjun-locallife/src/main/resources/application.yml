@@ -3,6 +3,13 @@ server:
 spring:
   application:
     name: xiangyanjun-locallife
+#  rabbitmq:
+#    host: 127.0.0.1
+#    port: 5672
+#    username: admin
+#    password: admin
+#    template:
+#      exchange: logs
 eureka:
   client:
     service-url:

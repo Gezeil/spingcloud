@@ -21,7 +21,7 @@ public class CommonController {
     private LocalLifeApi localLifeApi;
 
     @ApiOperation(value = "我是hello2")
-    @PostApi(value = "/hello2",auth = false)
+    @PostApi(value = "/hello2",auth = true)
     public void hello(){
         localLifeApi.hello();
         System.out.println("我是hello2");

@@ -1,6 +1,16 @@
 server:
   port: 8883
 spring:
+  redis:
+    host: 192.168.13.184
+    port: 6379
+    database: 0
+    timeout: 120000
+    jedis:
+      pool:
+        max-active: 10
+        min-idle: 2
+        max-wait: 1000
   application:
     name: xiangyanjun-common
   data:

@@ -5,11 +5,14 @@ import com.yanjun.xiang.common.annotation.PostApi;
 import com.yanjun.xiang.common.util.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author XiangYanJun
@@ -19,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("user")
 @Api(tags = "用户相关接口")
 public class LoginController {
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @ApiOperation(value = "登录接口")
     @PostApi(value = "/login",auth = false)
@@ -30,6 +36,8 @@ public class LoginController {
         if (isSuccess){
             String token = JwtUtils.sign(login.getLoginName(), "1");
             if (token!=null){
+                redisTemplate.opsForValue().set(token,login.getLoginName());
+                redisTemplate.boundValueOps(token).set(token,1, TimeUnit.DAYS);
                 return token;
             }
         }

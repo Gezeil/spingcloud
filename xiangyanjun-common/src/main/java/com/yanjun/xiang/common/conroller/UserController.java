@@ -3,6 +3,7 @@ package com.yanjun.xiang.common.conroller;
 import com.yanjun.xiang.common.annotation.PostApi;
 import com.yanjun.xiang.common.dto.UserRegisterDTO;
 import com.yanjun.xiang.common.entity.User;
+import com.yanjun.xiang.common.service.UserService;
 import com.yanjun.xiang.common.util.UserRegisteAndLogin;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/user")
 public class UserController {
 
-//    @Autowired
-//    private UserService service;
+    @Autowired
+    private UserService service;
 
     /**
      * 处理用户的登录请求
@@ -39,8 +40,7 @@ public class UserController {
         user.setSalt(saltAndCiphertext[0]);
         user.setPassword(saltAndCiphertext[1]);
 
-        //存
-//        service.userRegister(user);
+        service.userRegister(user);
 
         return UserRegisteAndLogin.userLogin(user); //使用户沆注册后立马登录
     }

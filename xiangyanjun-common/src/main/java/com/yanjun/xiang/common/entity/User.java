@@ -7,8 +7,9 @@ import lombok.Data;
 @Data
 @TableName("user_info")
 public class User {
-    private Integer id;
+    private Long id;
     private String name;
+    private String phone;
     private String password;
     @TableField(exist = false)
     private String per;

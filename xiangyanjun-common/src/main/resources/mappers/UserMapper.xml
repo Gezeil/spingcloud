@@ -5,4 +5,9 @@
     <insert id="userRegister">
         insert into user_info (`name`,phone,salt,password)  values (#{user.name},#{user.phone},#{user.salt},#{user.password})
     </insert>
+
+    <select id="selectUserInfo" resultType="com.yanjun.xiang.common.entity.User">
+        select * from user_info where name = #{name}
+    </select>
+
 </mapper>

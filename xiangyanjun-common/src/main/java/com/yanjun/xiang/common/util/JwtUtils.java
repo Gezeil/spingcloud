@@ -27,7 +27,7 @@ public class JwtUtils {
 
     private static String TOKEN_SECRET = "1";
 
-    public static String sign(String username,String userId){
+    public static String sign(String username,Long userId){
         try {
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);

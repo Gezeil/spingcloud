@@ -8,6 +8,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
+import org.spin.core.throwable.SimplifiedException;
 
 /**
  *用户注册与登录时用到的函数
@@ -65,11 +66,11 @@ public class UserRegisteAndLogin {
         }
         catch (UnknownAccountException e) //抛出这个异常说明用户不存在
         {
-            return false;
+            throw new SimplifiedException("用户不存在");
         }
         catch (IncorrectCredentialsException e) //抛出这个异常说明密码错误
         {
-            return false;
+            throw new SimplifiedException("密码错误");
         }
     }
 }

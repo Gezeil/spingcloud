@@ -1,11 +1,17 @@
 package com.yanjun.xiang.common.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yanjun.xiang.common.dao.UserMapper;
 import com.yanjun.xiang.common.entity.User;
 import com.yanjun.xiang.common.service.UserService;
+import com.yanjun.xiang.common.util.JwtUtils;
+import com.yanjun.xiang.common.util.UserRegisteAndLogin;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
@@ -15,13 +21,38 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    /**
+     * 登录
+     * @param user
+     * @return
+     */
     @Override
-    public void userRegister(User user) {
-        userMapper.userRegister(user);
+    public String userLogin(User user) {
+        User userInfo = userMapper.selectUserInfo(user.getName());
+        user.setPassword(UserRegisteAndLogin.getInputPasswordCiph(user.getPassword(), userInfo.getSalt()));
+        UserRegisteAndLogin.userLogin(user);
+        String token = token(userInfo);
+        return token;
     }
 
+    public String token(User userInfo){
+        String token = JwtUtils.sign(userInfo.getName(), userInfo.getId());
+        redisTemplate.opsForValue().set(token,userInfo.getName());
+        redisTemplate.boundValueOps(token).set(token,1, TimeUnit.DAYS);
+        return token;
+    }
+
+    /**
+     * 注册
+     * @param user
+     * @return
+     */
     @Override
-    public String selectAsaltByName(String name) {
-        return null;
+    public String userRegister(User user) {
+        userMapper.insert(user);
+        return token(user);
     }
 }

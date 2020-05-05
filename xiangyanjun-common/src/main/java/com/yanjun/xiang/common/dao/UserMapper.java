@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UserMapper extends BaseMapper<User> {
 
-    void userRegister(@Param("user") User user);
+    Integer userRegister(@Param("user") User user);
 
+    User selectUserInfo(@Param("name") String name);
 }

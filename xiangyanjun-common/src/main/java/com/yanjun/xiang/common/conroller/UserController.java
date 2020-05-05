@@ -5,6 +5,7 @@ import com.yanjun.xiang.common.dto.UserRegisterDTO;
 import com.yanjun.xiang.common.entity.User;
 import com.yanjun.xiang.common.service.UserService;
 import com.yanjun.xiang.common.util.UserRegisteAndLogin;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/user")
+@Api(tags = "用户相关接口")
 public class UserController {
 
     @Autowired
@@ -21,18 +23,18 @@ public class UserController {
     /**
      * 处理用户的登录请求
      */
-    @PostApi("/userLogin")
+    @PostApi(value = "/userLogin",auth = false)
     @ApiOperation(value = "登录")
-    public boolean userLogin(@RequestBody User user)
+    public String userLogin(@RequestBody User user)
     {
-        user.setPassword(UserRegisteAndLogin.getInputPasswordCiph(user.getPassword(), service.selectAsaltByName(user.getName())));
-
-        return UserRegisteAndLogin.userLogin(user);
+        String token = service.userLogin(user);
+        UserRegisteAndLogin.userLogin(user);
+        return token;
     }
 
-    @PostApi(value = "/userRegister")
+    @PostApi(value = "/userRegister",auth = false)
     @ApiOperation(value = "注册")
-    public boolean userRegister(@RequestBody User user){
+    public String userRegister(@RequestBody User user){
         String password = user.getPassword();
 
         String[] saltAndCiphertext = UserRegisteAndLogin.encryptPassword(password);
@@ -40,9 +42,10 @@ public class UserController {
         user.setSalt(saltAndCiphertext[0]);
         user.setPassword(saltAndCiphertext[1]);
 
-        service.userRegister(user);
+        String token = service.userRegister(user);//使用户沆注册后立马登录
 
-        return UserRegisteAndLogin.userLogin(user); //使用户沆注册后立马登录
+        UserRegisteAndLogin.userLogin(user);
+        return token;
     }
 }
 

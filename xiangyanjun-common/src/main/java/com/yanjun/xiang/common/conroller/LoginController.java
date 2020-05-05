@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @RequestMapping("user")
-@Api(tags = "用户相关接口")
+@Api(tags = "登录相关接口")
 public class LoginController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class LoginController {
             isSuccess=true;
         }
         if (isSuccess){
-            String token = JwtUtils.sign(login.getLoginName(), "1");
+            String token = JwtUtils.sign(login.getLoginName(), 1L);
             if (token!=null){
                 redisTemplate.opsForValue().set(token,login.getLoginName());
                 redisTemplate.boundValueOps(token).set(token,1, TimeUnit.DAYS);

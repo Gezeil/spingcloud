@@ -26,7 +26,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.DefaultTypedTuple;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -37,7 +43,35 @@ public class TeseSearch {
     
     @Autowired
     RestClient restClient;
-    
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    public static final String SCORE_RANK = "score_rank";
+
+    @Test
+    public void rrr(){
+        Set<ZSetOperations.TypedTuple<String>> tuples = new HashSet<>();
+        for (int i = 0; i < 100; i++) {
+            DefaultTypedTuple<String> tuple = new DefaultTypedTuple<>("1" + i, 1D + i);
+            tuples.add(tuple);
+        }
+        Long num = redisTemplate.opsForZSet().add(SCORE_RANK, tuples);
+
+
+        Set<ZSetOperations.TypedTuple<String>> tuples1 = new HashSet<>();
+        for (int i = 0; i < 100; i++) {
+            DefaultTypedTuple<String> tuple = new DefaultTypedTuple<>("1" + i, 0D);
+            tuples1.add(tuple);
+        }
+        Long num1 = redisTemplate.opsForZSet().add(SCORE_RANK+1, tuples1);
+
+        //取SCORE_RANK,SCORE_RANK+1的交集并且score相加，新增到SCORE_RANK+2
+        redisTemplate.opsForZSet().intersectAndStore(SCORE_RANK,SCORE_RANK+1,SCORE_RANK+2);
+
+        Set<ZSetOperations.TypedTuple<String>> typedTuples = redisTemplate.opsForZSet().reverseRangeWithScores(SCORE_RANK + 2, 0, -1);
+        System.out.println(JSON.toJSONString(typedTuples));
+    }
     
     /**
      * 查询type下所有文档

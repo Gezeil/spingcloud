@@ -1,7 +1,7 @@
 package com.yanjun.xiang.common.conroller;
 
+import com.yanjun.xiang.common.annotation.GetApi;
 import com.yanjun.xiang.common.annotation.PostApi;
-import com.yanjun.xiang.common.dto.UserRegisterDTO;
 import com.yanjun.xiang.common.entity.User;
 import com.yanjun.xiang.common.service.UserService;
 import com.yanjun.xiang.common.util.UserRegisteAndLogin;
@@ -17,8 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "用户相关接口")
 public class UserController {
 
+    final
+    UserService service;
+//    @Autowired
+//    private UserService service;
+
     @Autowired
-    private UserService service;
+    private UserController (UserService service){
+        this.service = service;
+    }
 
     /**
      * 处理用户的登录请求
@@ -47,5 +54,12 @@ public class UserController {
         UserRegisteAndLogin.userLogin(user);
         return token;
     }
+
+    @GetApi(value = "/hello")
+    @ApiOperation(value = "我是hello")
+    public void hello()  {
+        System.out.println("hello");
+    }
+
 }
 

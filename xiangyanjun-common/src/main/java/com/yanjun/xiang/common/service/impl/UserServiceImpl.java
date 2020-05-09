@@ -1,6 +1,6 @@
 package com.yanjun.xiang.common.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.alibaba.fastjson.JSON;
 import com.yanjun.xiang.common.dao.UserMapper;
 import com.yanjun.xiang.common.entity.User;
 import com.yanjun.xiang.common.service.UserService;
@@ -8,11 +8,10 @@ import com.yanjun.xiang.common.util.JwtUtils;
 import com.yanjun.xiang.common.util.UserRegisteAndLogin;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
-
 
 @Slf4j
 @Service
@@ -22,7 +21,9 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private StringRedisTemplate redisTemplate;
+
+    public final String key = "token:";
 
     /**
      * 登录
@@ -40,8 +41,7 @@ public class UserServiceImpl implements UserService {
 
     public String token(User userInfo){
         String token = JwtUtils.sign(userInfo.getName(), userInfo.getId());
-        redisTemplate.opsForValue().set(token,userInfo.getName());
-        redisTemplate.boundValueOps(token).set(token,1, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set(token, JSON.toJSONString(userInfo),2, TimeUnit.HOURS);
         return token;
     }
 

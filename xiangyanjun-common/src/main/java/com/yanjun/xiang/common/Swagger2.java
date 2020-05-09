@@ -31,8 +31,8 @@ public class Swagger2 {
 
         ParameterBuilder ticketPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<>();
-        ticketPar.name("token")
-                .description("token")
+        ticketPar.name("Authorization")
+                .description("Access Token")
                 .modelRef(new ModelRef("string"))
                 .parameterType("header")
                 .required(false)

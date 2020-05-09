@@ -31,7 +31,7 @@ public class SayHello {
     @ApiOperation(value = "我是hello")
     public void hello()  {
 //        rabbitmqConsumer.recv();
-        rabbitTemplate.convertAndSend("exchange.topic.say.hello", "hello","hello",new CorrelationData(UUID.randomUUID().toString()));
+//        rabbitTemplate.convertAndSend("exchange.topic.say.hello", "hello","hello",new CorrelationData(UUID.randomUUID().toString()));
         System.out.println("hello");
     }
 

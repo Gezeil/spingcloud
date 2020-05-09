@@ -20,7 +20,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PostApi {
-
     /**
      * 是否需要认证，默认true
      *
@@ -45,17 +44,6 @@ public @interface PostApi {
      */
     @AliasFor(annotation = Auth.class, attribute = "permissions")
     String[] permissions() default {};
-
-    /**
-     * 是否仅内部调用
-     * <pre>
-     *     内部调用，意味着该接口仅能由服务间相互调用，不允许由网关分发。
-     * </pre>
-     *
-     * @return 是否仅内部调用
-     */
-    @AliasFor(annotation = Auth.class, attribute = "internal")
-    boolean internal() default false;
 
     /**
      * RequestMapping的名称
@@ -103,4 +91,17 @@ public @interface PostApi {
 
     @AliasFor(annotation = RequestMapping.class, attribute = "produces")
     String[] produces() default {};
+
+    /**
+     * 是否支持第三方接入调用
+     */
+    @Deprecated
+    boolean thirdParty() default false;
+
+    /**
+     * 业务线权限组
+     * （参考权限重构文档）
+     * @return 业务线
+     */
+    int[] privilegeGroups() default -1;
 }

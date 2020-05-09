@@ -46,16 +46,16 @@ public @interface PutApi {
     @AliasFor(annotation = Auth.class, attribute = "permissions")
     String[] permissions() default {};
 
-    /**
-     * 是否仅内部调用
-     * <pre>
-     *     内部调用，意味着该接口仅能由服务间相互调用，不允许由网关分发。
-     * </pre>
-     *
-     * @return 是否仅内部调用
-     */
-    @AliasFor(annotation = Auth.class, attribute = "internal")
-    boolean internal() default false;
+//    /**
+//     * 是否仅内部调用
+//     * <pre>
+//     *     内部调用，意味着该接口仅能由服务间相互调用，不允许由网关分发。
+//     * </pre>
+//     *
+//     * @return 是否仅内部调用
+//     */
+//    @AliasFor(annotation = Auth.class, attribute = "internal")
+//    boolean internal() default false;
 
     /**
      * RequestMapping的名称

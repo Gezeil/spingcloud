@@ -1,5 +1,6 @@
 package com.yanjun.xiang.common.annotation;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -37,12 +38,16 @@ public @interface Auth {
     String[] permissions() default {};
 
     /**
-     * 是否仅内部调用
-     * <pre>
-     *     内部调用，意味着该接口仅能由服务间相互调用，不允许由网关分发。
-     * </pre>
-     *
-     * @return 是否仅内部调用
+     * 是否支持第三方接入调用(新版本弃用)
      */
-    boolean internal() default false;
+    @Deprecated
+    boolean thirdParty() default false;
+
+    /**
+     * 业务线权限组
+     * （参考权限重构文档）
+     * @return 业务线
+     */
+    int[] privilegeGroups() default -1;
+
 }

@@ -1,6 +1,7 @@
 package com.yanjun.xiang.common.util;
 
 import com.yanjun.xiang.common.entity.User;
+import com.yanjun.xiang.common.throwable.SimplifiedException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -8,7 +9,6 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
-import org.spin.core.throwable.SimplifiedException;
 
 /**
  *用户注册与登录时用到的函数

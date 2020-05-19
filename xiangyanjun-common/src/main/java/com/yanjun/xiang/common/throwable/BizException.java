@@ -1,7 +1,7 @@
 package com.yanjun.xiang.common.throwable;
 
-import org.spin.core.ErrorCode;
-import org.spin.core.throwable.SimplifiedException;
+
+import com.yanjun.xiang.common.util.ErrorCode;
 
 public class BizException extends SimplifiedException {
     public BizException(ErrorCode exceptionType, Throwable e) {

@@ -1,9 +1,9 @@
 package com.yanjun.xiang.common.lock;
 
+import com.yanjun.xiang.common.util.DistributedLock;
+import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.spin.core.concurrent.DistributedLock;
-import org.spin.core.util.StringUtils;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.connection.ReturnType;

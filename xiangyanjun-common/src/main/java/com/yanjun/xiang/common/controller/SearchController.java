@@ -1,4 +1,4 @@
-package com.yanjun.xiang.common.conroller;
+package com.yanjun.xiang.common.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;

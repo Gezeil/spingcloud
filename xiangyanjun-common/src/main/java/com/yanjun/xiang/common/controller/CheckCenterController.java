@@ -1,4 +1,4 @@
-package com.yanjun.xiang.common.conroller;
+package com.yanjun.xiang.common.controller;
 
 import com.yanjun.xiang.common.service.WebSocketServer;
 import org.springframework.stereotype.Controller;

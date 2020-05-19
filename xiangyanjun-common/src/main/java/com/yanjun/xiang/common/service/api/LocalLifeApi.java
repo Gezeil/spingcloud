@@ -1,6 +1,6 @@
 package com.yanjun.xiang.common.service.api;
 
-import org.spin.common.web.annotation.GetApi;
+import com.yanjun.xiang.common.annotation.GetApi;
 import org.springframework.cloud.openfeign.FeignClient;
 
 /**

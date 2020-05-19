@@ -1,16 +1,13 @@
-package com.yanjun.xiang.common.conroller;
+package com.yanjun.xiang.common.controller;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import com.yanjun.xiang.common.annotation.PostApi;
 import com.yanjun.xiang.common.util.ConnectionUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.spin.common.web.annotation.PostApi;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 @RestController
 @RequestMapping(value = "/rabbit")

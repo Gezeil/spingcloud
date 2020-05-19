@@ -1,4 +1,4 @@
-package com.yanjun.xiang.common.conroller;
+package com.yanjun.xiang.common.controller;
 
 import com.yanjun.xiang.common.annotation.GetApi;
 import com.yanjun.xiang.common.annotation.PostApi;

@@ -4,26 +4,23 @@ import com.alibaba.fastjson.JSON;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.yanjun.xiang.common.annotation.Auth;
-import com.yanjun.xiang.common.base.view.RestfulResponse;
-import com.yanjun.xiang.common.base.vo.CurrentUser;
 import com.yanjun.xiang.common.entity.User;
 import com.yanjun.xiang.common.throwable.AuthException;
+import com.yanjun.xiang.common.util.ErrorCode;
+import com.yanjun.xiang.common.util.JsonUtils;
 import com.yanjun.xiang.common.util.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.spin.core.ErrorCode;
-import org.spin.core.util.JsonUtils;
-import org.spin.core.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -112,7 +109,7 @@ public class TestInterceptor implements HandlerInterceptor {
         logger.info("authAnno:{}", authAnno);
 
 //        获取网关携带过来的用户信息
-        CurrentUser currentUser = getCurrentUser(request);
+//        CurrentUser currentUser = getCurrentUser(request);
 //        try {
 //            //优先判断是否内部调用（无需token）
 //            boolean isInternal = this.validateInternal(host, authAnno);
@@ -126,7 +123,7 @@ public class TestInterceptor implements HandlerInterceptor {
             }
 
             //auth=true 再校验
-            this.checkUser(currentUser);
+//            this.checkUser(currentUser);
 
             //解析token
             String header = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -291,7 +288,7 @@ public class TestInterceptor implements HandlerInterceptor {
 //    }
 
     public boolean isFeign(String fromFeign) {
-        return StringUtils.isNotEmpty(fromFeign);
+        return !StringUtils.isEmpty(fromFeign);
     }
 
 //    private void validateFeign(String fromFeign, String host) {
@@ -358,38 +355,38 @@ public class TestInterceptor implements HandlerInterceptor {
         return JSON.parseObject(value, User.class);
     }
 
-    private void checkUser(CurrentUser currentUser) {
-        ErrorCode errorCode = null;
-        if (null == currentUser) {
-            CurrentUser.clearCurrent();
-            errorCode = ErrorCode.ACCESS_DENINED;
-        } else if (ErrorCode.TOKEN_EXPIRED.getCode() == -currentUser.getId().intValue()) {
-            CurrentUser.clearCurrent();
-            errorCode = ErrorCode.TOKEN_EXPIRED;
-        } else if (ErrorCode.TOKEN_INVALID.getCode() == -currentUser.getId().intValue()) {
-            CurrentUser.clearCurrent();
-            errorCode = ErrorCode.TOKEN_INVALID;
-        }
-        //打印token错误码
-        if (null != errorCode && errorCode != ErrorCode.ACCESS_DENINED) {
-            logger.warn("非法的Token: {}", errorCode.toString());
-        }
-        if (errorCode != null) {
-            throw new AuthException(errorCode);
-        }
-    }
-
-    private CurrentUser getCurrentUser(HttpServletRequest request) {
-        Enumeration<String> enumeration = request.getHeaders(HttpHeaders.FROM);
-        CurrentUser currentUser = null;
-        if (enumeration.hasMoreElements()) {
-            String user = enumeration.nextElement();
-            if (StringUtils.isNotEmpty(user)) {
-                currentUser = CurrentUser.setCurrent(StringUtils.urlDecode(user));
-            }
-        }
-        return currentUser;
-    }
+//    private void checkUser(CurrentUser currentUser) {
+//        ErrorCode errorCode = null;
+//        if (null == currentUser) {
+//            CurrentUser.clearCurrent();
+//            errorCode = ErrorCode.ACCESS_DENINED;
+//        } else if (ErrorCode.TOKEN_EXPIRED.getCode() == -currentUser.getId().intValue()) {
+//            CurrentUser.clearCurrent();
+//            errorCode = ErrorCode.TOKEN_EXPIRED;
+//        } else if (ErrorCode.TOKEN_INVALID.getCode() == -currentUser.getId().intValue()) {
+//            CurrentUser.clearCurrent();
+//            errorCode = ErrorCode.TOKEN_INVALID;
+//        }
+//        //打印token错误码
+//        if (null != errorCode && errorCode != ErrorCode.ACCESS_DENINED) {
+//            logger.warn("非法的Token: {}", errorCode.toString());
+//        }
+//        if (errorCode != null) {
+//            throw new AuthException(errorCode);
+//        }
+//    }
+//
+//    private CurrentUser getCurrentUser(HttpServletRequest request) {
+//        Enumeration<String> enumeration = request.getHeaders(HttpHeaders.FROM);
+//        CurrentUser currentUser = null;
+//        if (enumeration.hasMoreElements()) {
+//            String user = enumeration.nextElement();
+//            if (StringUtils.isNotEmpty(user)) {
+//                currentUser = CurrentUser.setCurrent(StringUtils.urlDecode(user));
+//            }
+//        }
+//        return currentUser;
+//    }
     //------------------------------重构结束------------------------------------------------
 
     @Override
@@ -397,15 +394,15 @@ public class TestInterceptor implements HandlerInterceptor {
         // do nothing
     }
 
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        // do nothing
-        try {
-            CurrentUser.clearCurrent();
-        } catch (Exception e) {
-            logger.error("CurrentUser remove failed e", e.getMessage());
-        }
-    }
+//    @Override
+//    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+//        // do nothing
+//        try {
+//            CurrentUser.clearCurrent();
+//        } catch (Exception e) {
+//            logger.error("CurrentUser remove failed e", e.getMessage());
+//        }
+//    }
 
 //    /**
 //     * 判断请求是否来自内部
@@ -429,7 +426,7 @@ public class TestInterceptor implements HandlerInterceptor {
             response.setCharacterEncoding("UTF-8");
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setHeader("Encoded", "1");
-            response.getWriter().write(JsonUtils.toJson(RestfulResponse
+            response.getWriter().write(JsonUtils.toJsonString(RestfulResponse
                     .error(errorCode, ((null == message || message.length == 0 || StringUtils.isEmpty(message[0])) ? errorCode.getDesc() : message[0]))));
         } catch (IOException e) {
             logger.error(e.getMessage());
@@ -531,11 +528,11 @@ public class TestInterceptor implements HandlerInterceptor {
      */
     private boolean isMatched(String path, List<String> urls) {
         boolean matched = false;
-        if (StringUtils.isNotEmpty(path) && !CollectionUtils.isEmpty(urls)) {
+        if (!StringUtils.isEmpty(path) && !CollectionUtils.isEmpty(urls)) {
             //匹配url
             AntPathMatcher matcher = new AntPathMatcher();
             for (String url : urls) {
-                if (StringUtils.isNotEmpty(url) && matcher.match(url, path)) {
+                if (!StringUtils.isEmpty(url) && matcher.match(url, path)) {
                     matched = true;
                     break;
                 }

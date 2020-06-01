@@ -24,6 +24,12 @@ spring:
     elasticsearch:
       cluster-name: es-1
       cluster-nodes: 192.168.13.250:9200
+  rabbitmq:
+    listener:
+      simple:
+        acknowledge-mode: MANUAL
+        default-requeue-rejected: false
+      type: simple
 elasticsearch:
   hostlist: 192.168.13.250:9200
 #  rabbitmq:

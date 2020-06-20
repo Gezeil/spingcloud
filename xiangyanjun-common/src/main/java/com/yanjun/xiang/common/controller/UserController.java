@@ -3,11 +3,13 @@ package com.yanjun.xiang.common.controller;
 import com.yanjun.xiang.common.annotation.GetApi;
 import com.yanjun.xiang.common.annotation.PostApi;
 import com.yanjun.xiang.common.entity.User;
+import com.yanjun.xiang.common.mq.MQProducer;
 import com.yanjun.xiang.common.service.UserService;
 import com.yanjun.xiang.common.util.UserRegisteAndLogin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,15 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "用户相关接口")
 public class UserController {
 
-    final
-    UserService service;
-//    @Autowired
-//    private UserService service;
+    @Autowired
+    private UserService service;
 
     @Autowired
-    private UserController (UserService service){
-        this.service = service;
-    }
+    private MQProducer mqProducer;
 
     /**
      * 处理用户的登录请求
@@ -61,5 +59,10 @@ public class UserController {
         System.out.println("hello");
     }
 
+    @GetApi(value = "/sendMsg/{msg}",auth = false)
+    @ApiOperation(value = "生产消息")
+    public void sendMsg(@PathVariable("msg") String msg){
+        mqProducer.sendCustomMsg(msg);
+    }
 }
 

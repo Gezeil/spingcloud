@@ -30,6 +30,12 @@ spring:
         acknowledge-mode: MANUAL
         default-requeue-rejected: false
       type: simple
+#开启生产者确认模式
+    publisher-confirms: true
+    host: 127.0.0.1
+    username: guest
+    password: guest
+    port: 5672
 elasticsearch:
   hostlist: 192.168.13.250:9200
 #  rabbitmq:

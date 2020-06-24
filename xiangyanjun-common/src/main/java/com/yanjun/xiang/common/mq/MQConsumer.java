@@ -58,7 +58,7 @@ public class MQConsumer {
     public void receiveMsg(Message message, Channel channel) throws IOException {
         String msg = new String(message.getBody());
         log.info("收到业务消息：{}", msg);
-        channel.basicNack(message.getMessageProperties().getDeliveryTag(),false,false);
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
     }
 
 

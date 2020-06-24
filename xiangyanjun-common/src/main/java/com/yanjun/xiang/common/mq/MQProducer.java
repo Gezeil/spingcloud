@@ -40,6 +40,12 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
         log.info("消息id:{}, msg:{}", correlationData.getId(), msg);
 
         rabbitTemplate.convertAndSend(RabbitMQConfig.BUSINESS_EXCHANGE_NAME, "key", msg, correlationData);
+
+        correlationData = new CorrelationData(UUID.randomUUID().toString());
+
+        log.info("消息id:{}, msg:{}", correlationData.getId(), msg);
+
+        rabbitTemplate.convertAndSend(RabbitMQConfig.BUSINESS_EXCHANGE_NAME, "key2", msg, correlationData);
     }
 
     @Override

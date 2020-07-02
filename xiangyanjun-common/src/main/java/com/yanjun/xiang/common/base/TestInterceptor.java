@@ -83,6 +83,13 @@ public class TestInterceptor implements HandlerInterceptor {
     }
 
     public TestInterceptor(DiscoveryClient discoveryClient, EurekaClient eurekaClient, RedisUtil redisUtil) {
+        List<String> list = new ArrayList<>();
+        Collections.sort(list, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return 0;
+            }
+        });
         this.discoveryClient = discoveryClient;
         this.eurekaClient = eurekaClient;
         this.redisUtil = redisUtil;

@@ -37,6 +37,12 @@ public class UserController {
     public static void main(String[] args) throws FileNotFoundException {
         FileOutputStream fileOutputStream = new FileOutputStream("1");
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
+        RejectedExecutionHandler rejectedExecutionHandler = new RejectedExecutionHandler() {
+            @Override
+            public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+                log.info("稍等");
+            }
+        };
         ThreadPoolExecutor threadPoolExecutor
                 = new ThreadPoolExecutor(
                 Runtime.getRuntime().availableProcessors(),
@@ -45,12 +51,7 @@ public class UserController {
                 TimeUnit.MICROSECONDS,
                 new LinkedBlockingDeque<>(),
                 threadFactory,
-                new RejectedExecutionHandler() {
-                    @Override
-                    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                        log.info("稍等");
-                    }
-                });
+                rejectedExecutionHandler);
 
         Pool pool = new Pool();
         Thread thread1 = new Thread(pool,"小米1");

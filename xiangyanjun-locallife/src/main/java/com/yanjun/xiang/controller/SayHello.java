@@ -29,9 +29,10 @@ public class SayHello {
 
     @GetMapping(value = "hello")
     @ApiOperation(value = "我是hello")
-    public void hello()  {
+    public String hello()  {
         rabbitTemplate.convertAndSend("exchange.topic.say.hello", "hello","hello",new CorrelationData(UUID.randomUUID().toString()));
         System.out.println("hello");
+        return "大头大头，下雨不愁";
     }
 
     @GetMapping(value = "send/{msg}")

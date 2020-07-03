@@ -10,6 +10,6 @@ import lombok.Data;
  * @Date 2020/7/2 0002
  */
 @Data
-public class ImageMessage {
+public class ImageMessage extends BaseMessage {
     private Image Image;
 }

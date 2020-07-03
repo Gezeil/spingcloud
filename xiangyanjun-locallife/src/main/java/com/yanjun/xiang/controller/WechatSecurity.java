@@ -5,17 +5,21 @@ import com.yanjun.xiang.dispather.MsgDispatcher;
 import com.yanjun.xiang.util.MessageUtil;
 import com.yanjun.xiang.util.SignUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/wechat")
 @Slf4j
 public class WechatSecurity {
+
+    @Autowired
+    private EventDispatcher eventDispatcher;
+
     @GetMapping(value = "security")
     public String security(@RequestParam("signature") String signature,
                            @RequestParam("timestamp") String timestamp,
@@ -40,7 +44,7 @@ public class WechatSecurity {
             Map<String, String> map = MessageUtil.parseXml(request);
             String msgtype = map.get("MsgType");
             if (MessageUtil.REQ_MESSAGE_TYPE_EVENT.equals(msgtype)) {
-                return EventDispatcher.processEvent(map);
+                return eventDispatcher.processEvent(map);
             } else {
                 return MsgDispatcher.processMessage(map);
             }

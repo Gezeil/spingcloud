@@ -1,7 +1,6 @@
 package com.yanjun.xiang.controller;
 
-import com.yanjun.xiang.dispather.EventDispatcher;
-import com.yanjun.xiang.dispather.MsgDispatcher;
+import com.yanjun.xiang.service.DispatcherService;
 import com.yanjun.xiang.util.MessageUtil;
 import com.yanjun.xiang.util.SignUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ import java.util.Map;
 public class WechatSecurity {
 
     @Autowired
-    private EventDispatcher eventDispatcher;
+    private DispatcherService dispatcherService;
 
     @GetMapping(value = "security")
     public String security(@RequestParam("signature") String signature,
@@ -44,9 +43,9 @@ public class WechatSecurity {
             Map<String, String> map = MessageUtil.parseXml(request);
             String msgtype = map.get("MsgType");
             if (MessageUtil.REQ_MESSAGE_TYPE_EVENT.equals(msgtype)) {
-                return eventDispatcher.processEvent(map);
+                return dispatcherService.processEvent(map);
             } else {
-                return MsgDispatcher.processMessage(map);
+                return dispatcherService.processMessage(map);
             }
         } catch (Exception e) {
             log.error(e.toString());

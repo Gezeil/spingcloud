@@ -1,6 +1,5 @@
 package com.yanjun.xiang.request;
 
-import com.yanjun.xiang.request.BaseMessage;
 import lombok.Data;
 
 /**

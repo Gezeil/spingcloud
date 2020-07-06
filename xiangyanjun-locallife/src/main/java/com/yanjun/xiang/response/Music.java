@@ -11,6 +11,8 @@ import lombok.Data;
  */
 @Data
 public class Music {
+
+    private String ThumbMediaId;
     // 音乐名称
     private String Title;
     // 音乐描述

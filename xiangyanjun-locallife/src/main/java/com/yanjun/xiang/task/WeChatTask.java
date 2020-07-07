@@ -2,6 +2,7 @@ package com.yanjun.xiang.task;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yanjun.xiang.util.HttpUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 @EnableScheduling
 @Component
+@Slf4j
 public class WeChatTask {
     /**
      * 18      * @Description: 任务执行体
@@ -50,7 +52,7 @@ public class WeChatTask {
         params.put("grant_type", "client_credential");
         params.put("appid", appid);
         params.put("secret", appSecret);
-        String jstoken = HttpUtils.sendGet(
+        String jstoken = HttpUtils.httpClientGet(
                 tokenUrl, params);
         String access_token = JSONObject.parseObject(jstoken).getString(
                 "access_token"); // 获取到token并赋值保存

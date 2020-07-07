@@ -116,9 +116,6 @@ public class MessageUtil {
      */
     public static final String EVENT_TYPE_SCAN = "SCAN";
 
-    /**
-     * 事件类型：LOCATION(上报地理位置事件)
-     */
 
     @SuppressWarnings("unchecked")
     public static Map<String, String> parseXml(HttpServletRequest request) throws Exception {

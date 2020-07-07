@@ -11,7 +11,7 @@ import java.util.Map;
  * @Date 2020/7/6 0006
  */
 public interface DispatcherService {
-    String processEvent(Map<String, String> map) throws IOException;
+    String processEvent(Map<String, String> map) throws Exception;
 
     String processMessage(Map<String, String> map) throws IOException;
 }

@@ -130,3 +130,4 @@ wx:
   AppSecret: 8c976d1e630265e71a94bf6d48343bda
   tokenUrl: https://api.weixin.qq.com/cgi-bin/token
   mediaUrl: http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=
+  userInfoUrl: https://api.weixin.qq.com/cgi-bin/user/info

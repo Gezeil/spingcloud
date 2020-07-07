@@ -34,24 +34,40 @@ public class DispatcherServiceImpl implements DispatcherService {
      * @return
      */
     @Override
-    public String processEvent(Map<String, String> map) throws IOException {
+    public String processEvent(Map<String, String> map) throws Exception {
         String openid = map.get("FromUserName"); // 用户openid
         String mpid = map.get("ToUserName"); // 公众号原始ID
         if (map.get("Event").equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) { // 关注事件
-            ImageMessage imgmsg = new ImageMessage();
-            imgmsg.setToUserName(openid);
-            imgmsg.setFromUserName(mpid);
-            imgmsg.setCreateTime(new Date().getTime());
-            imgmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_Image);
-            System.out.println("==============这是关注事件！");
-            Image img = new Image();
-            String filepath = "D:\\1.gif";
-            String type = "image";
-            String mediaid = httpPostUploadUtil.formUpload(filepath, type);
-            System.out.println(mediaid);
-            img.setMediaId(mediaid);
-            imgmsg.setImage(img);
-            return MessageUtil.imageMessageToXml(imgmsg);
+            NewsMessage newmsg = new NewsMessage();
+            newmsg.setToUserName(openid);
+            newmsg.setFromUserName(mpid);
+            newmsg.setCreateTime(new Date().getTime());
+            newmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+            Map<String, String> userinfo = httpPostUploadUtil.openidUserinfo(openid);
+            Article article = new Article();
+            article.setTitle("菜鸟程序员成长之路！");
+            article.setUrl("http://3rva7u.natappfree.cc/test/hello");
+            article.setPicUrl(String.valueOf(userinfo.get("headimgurl")));
+            article.setTitle("尊敬的：" + userinfo.get("nickname") + ",你好！");
+            List<Article> list = new ArrayList<Article>();
+            list.add(article); // 这里发送的是单图文，如果需要发送多图文则在这里list中加入多个Article即可！
+            newmsg.setArticleCount(list.size());
+            newmsg.setArticles(list);
+            return MessageUtil.newsMessageToXml(newmsg);
+//            ImageMessage imgmsg = new ImageMessage();
+//            imgmsg.setToUserName(openid);
+//            imgmsg.setFromUserName(mpid);
+//            imgmsg.setCreateTime(new Date().getTime());
+//            imgmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_Image);
+//            System.out.println("==============这是关注事件！");
+//            Image img = new Image();
+//            String filepath = "D:\\1.gif";
+//            String type = "image";
+//            String mediaid = httpPostUploadUtil.formUpload(filepath, type);
+//            System.out.println(mediaid);
+//            img.setMediaId(mediaid);
+//            imgmsg.setImage(img);
+//            return MessageUtil.imageMessageToXml(imgmsg);
         }
 
         if (map.get("Event").equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) { // 取消关注事件
@@ -67,7 +83,22 @@ public class DispatcherServiceImpl implements DispatcherService {
         }
 
         if (map.get("Event").equals(MessageUtil.EVENT_TYPE_CLICK)) { // 自定义菜单点击事件
+            ImageMessage imgmsg = new ImageMessage();
+            imgmsg.setToUserName(openid);
+            imgmsg.setFromUserName(mpid);
+            imgmsg.setCreateTime(new Date().getTime());
+            imgmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_Image);
+            System.out.println("==============这是关注事件！");
+            Image img = new Image();
+            String filepath = "D:\\1.gif";
+            String type = "image";
+            String mediaid = httpPostUploadUtil.formUpload(filepath, type);
+            System.out.println(mediaid);
+            img.setMediaId(mediaid);
+            imgmsg.setImage(img);
+
             System.out.println("==============这是自定义菜单点击事件！");
+            return MessageUtil.imageMessageToXml(imgmsg);
         }
 
         if (map.get("Event").equals(MessageUtil.EVENT_TYPE_VIEW)) { // 自定义菜单View事件

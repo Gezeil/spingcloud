@@ -41,6 +41,9 @@ public class WechatSecurity {
     public String securityPost(HttpServletRequest request, HttpServletResponse response) {
         try {
             Map<String, String> map = MessageUtil.parseXml(request);
+            for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
+                log.info("入参：" + stringStringEntry.getKey() +":"+stringStringEntry.getValue());
+            }
             String msgtype = map.get("MsgType");
             if (MessageUtil.REQ_MESSAGE_TYPE_EVENT.equals(msgtype)) {
                 return dispatcherService.processEvent(map);
